@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Confirmation</title>
+</head>
+<body>
+    <h1>Cart Confirmation</h1>
+
+    <h2>Items in Cart</h2>
+    <ul>
+        {% for quantity,product in products %}
+            <li>
+                <strong>-Category ({{ product.category.name }}):</strong><br/>
+                {{ quantity }} x {{ product.product_type.name }} {{ product.name }} -> ${{ product.price * quantity }} (${{ product.price }})
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Total</h2>
+    <p>Total: ${{ total_price }}</p>
+
+    <h2>Payment Information</h2>
+    <form action="{{ url_for('process_payment') }}" method="post">
+        <!-- Hidden input fields to store products data -->
+        {% for quantity, product in products %}
+            <input type="hidden" name="products[]" value="{{ product.id }}">
+        {% endfor %}
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="name">Address:</label>
+        <input type="text" id="address" name="address" required><br>
+
+        <label for="name">VIA card number:</label>
+        <input type="text" id="via_card_number" name="via_card_number" required><br>
+
+        <label for="card_number">Card Number:</label>
+        <input type="text" id="card_number" name="card_number" required><br>
+
+        <label for="expiration_date">Expiration Date:</label>
+        <input type="text" id="expiration_date" name="expiration_date" required><br>
+
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" name="cvv" required><br>
+
+        <button type="submit">Confirm Payment</button>
+    </form>
+</body>
+</html>

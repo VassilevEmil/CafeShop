@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <!-- Navigation links -->
+    <ul>
+        <li><a href="{{ url_for('add_category') }}">Add Category</a></li>
+        <li><a href="{{ url_for('add_product_type') }}">Add Product Type</a></li>
+        <li><a href="{{ url_for('add_product') }}">Add Product</a></li>
+        <!-- Add more navigation links as needed -->
+    </ul>
+
+    <!-- Order table -->
+    <h2>Order Table</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer Name</th>
+                <th>Customer Address</th>
+                <th>VIA Card Number</th>
+                <th>Payment Method</th>
+                <th>Products</th>
+                <th>Order Date</th>
+                <!-- Add more table headers as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.via_customer.name }}</td>
+                    <td>{{ order.via_customer.address }}</td>
+                    <td>{{ order.via_customer.via_card_number }}</td>
+                    <td>{{ order.payment.card_number }}</td>
+                    <td>
+                        {% for product in order.products %}
+                            <li>{{ product.name }}</li>
+                        {% endfor %}
+                    </td>
+                    <td>{{ order.order_date }}</td>
+                    <!-- Add more table data as needed -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Product table -->
+    <h2>Product Table</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Edit</th>
+                <th>Delete</th>
+                <!-- Add more table headers as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.category.name }}</td>
+                    <td>{{ product.product_type.name }}</td>
+                    <td>
+                    <form action="{{ url_for('edit_product', product_id=product.id) }}" method="get">
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
+                    <td>
+                        <form action="{{ url_for('delete_product', product_id=product.id) }}" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                    <!-- Add more table data as needed -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Categories</h2>
+<ul>
+  {% for category in categories %}
+    <li>{{ category.name }}</li>
+  {% endfor %}
+</ul>
+
+<h2>Product Types</h2>
+<ul>
+  {% for product_type in product_types %}
+    <li>{{ product_type.name }} - {{ product_type.category.name }}</li>
+  {% endfor %}
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog</title>
+</head>
+<body>
+    <h1>Welcome to Our Catalog!</h1>
+
+    <form action="/add_to_cart" method="post">
+        <ul>
+            {% for product in products %}
+                <li>
+                    <input type="checkbox" name="product_ids" value="{{ product.id }}">
+                    <label>{{ product.product_type.name }} {{ product.name }} - ${{ product.price }}</label>
+                    <input type="number" name="quantity_{{ product.id }}" value="1" min="1" max="10">
+                </li>
+            {% endfor %}
+        </ul>
+
+        <button type="submit">Add Selected Items to Cart</button>
+    </form>
+</body>
+</html>
